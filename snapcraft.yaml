@@ -1,0 +1,49 @@
+name: mcomix-tabetai
+version: 1.2.1
+summary: mcomix snap
+description: |
+ MComix is a user-friendly, customizable image viewer.
+ It is specifically designed to handle comic books (both Western comics and manga) 
+ and supports a variety of container formats (including CBR, CBZ, CB7, CBT, LHA and PDF). 
+ MComix is a fork of Comix.
+grade: stable
+confinement: strict
+
+apps:
+  mcomix-tabetai:
+    command: desktop-launch $SNAP/bin/mcomix
+    plugs: [unity7, x11, opengl, gsettings, home, removable-media, raw-usb]
+    desktop: share/applications/mcomix.desktop
+
+parts:
+  mcomix:
+    source: https://sourceforge.net/projects/mcomix/files/MComix-1.2.1/mcomix-1.2.1.tar.bz2
+    plugin: python
+    python-version: python2
+    stage-packages:
+           - python-gtk2
+           - python-pil
+           - python-setuptools
+           - unrar
+           - lhasa
+           - mupdf-tools
+           - p7zip
+           - p7zip-full
+    install: |
+      sed -i 's|Icon=mcomix|Icon=${SNAP}/share/icons/hicolor/48x48/apps/mcomix.png|g' $SNAPCRAFT_PART_INSTALL/share/applications/mcomix.desktop
+      rm $SNAPCRAFT_PART_INSTALL/usr/bin/7za
+      rm $SNAPCRAFT_PART_INSTALL/usr/bin/7z
+      rm $SNAPCRAFT_PART_INSTALL/usr/bin/7zr
+      mv $SNAPCRAFT_PART_INSTALL/usr/lib/p7zip/7za $SNAPCRAFT_PART_INSTALL/usr/bin/7za
+      mv $SNAPCRAFT_PART_INSTALL/usr/lib/p7zip/7z $SNAPCRAFT_PART_INSTALL/usr/bin/7z
+      mv $SNAPCRAFT_PART_INSTALL/usr/lib/p7zip/7zr $SNAPCRAFT_PART_INSTALL/usr/bin/7zr
+      mv $SNAPCRAFT_PART_INSTALL/usr/lib/p7zip/7z.so $SNAPCRAFT_PART_INSTALL/usr/bin/7z.so
+    after: [desktop-gtk2]
+    
+
+         
+     
+  
+    
+    
+
